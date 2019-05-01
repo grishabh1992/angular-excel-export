@@ -8,40 +8,83 @@ import { DatePipe } from '../../node_modules/@angular/common';
 export class ExcelService {
   constructor(private datePipe: DatePipe) {
   }
+  exportAsExcelFile(json: any[], excelFileName: string, headersArray: any[]): void {
+    // Excel Title, Header, Data
+    const header = headersArray;
+    const data = json;
+    // Create workbook and worksheet
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet(excelFileName);
+    // Add Header Row
+    const headerRow = worksheet.addRow(header);
+    // Cell Style : Fill and Border
+    headerRow.eachCell((cell, number) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFF00' },
+        bgColor: { argb: 'FF0000FF' }
+      };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+    });
+    // Add Data and Conditional Formatting
+    data.forEach((element) => {
+      const eachRow = [];
+      headersArray.forEach((headers) => {
+        eachRow.push(element[headers])
+      });
+      if (element.isDeleted === "Y") {
+        const deletedRow = worksheet.addRow(eachRow);
+        deletedRow.eachCell((cell, number) => {
+          cell.font = { name: 'Calibri', family: 4, size: 11, bold: false, strike: true };
+        });
+      } else {
+        worksheet.addRow(eachRow);
+      }
+    });
+    worksheet.getColumn(3).width = 15;
+    worksheet.getColumn(4).width = 20;
+    worksheet.getColumn(5).width = 30;
+    worksheet.getColumn(6).width = 30;
+    worksheet.getColumn(7).width = 10;
+    worksheet.addRow([]);
+    // G enerate Excel File with given name
+    workbook.xlsx.writeBuffer().then((anyexceldata) => {
+        const blob = new Blob([anyexceldata], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, 'CarData.xlsx');
+    });
+  }
+
 
   generateExcel() {
-  try {
-    const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('My Sheet');
+    try {
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('My Sheet');
 
-    worksheet.columns = [
+      worksheet.columns = [
         { header: 'Id', key: 'id', width: 10 },
         { header: 'Name', key: 'name', width: 32 },
         { header: 'D.O.B.', key: 'DOB', width: 10 }
-    ];
-    worksheet.addRow({id: 1, name: 'John Doe', dob: new Date(1970,1,1)});
-    worksheet.addRow({id: 2, name: 'Jane Doe', dob: new Date(1965,1,7)});
+      ];
+      worksheet.addRow({ id: 1, name: 'John Doe', dob: new Date(1970, 1, 1) });
+      worksheet.addRow({ id: 2, name: 'Jane Doe', dob: new Date(1965, 1, 7) });
 
-    // const tempFilePath = tempfile('.xlsx');
-    // workbook.xlsx.writeFile('./temp.xlsx').then((data) => {
-    //   console.log(data);
 
-    // });
-    workbook.xlsx.writeBuffer().then((data:ArrayBuffer) => {
-      console.log(data);
-         const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, 'CarData.xlsx');
-      // const blob = new Blob([data], { type: this.blobType });
-      // const url = window.URL.createObjectURL(blob);
-      // const a = document.createElement('a');
-      // a.href = url;
-      // a.download = this.excelFileName;
-      // a.click();
-  });
-  } catch(err) {
+      workbook.xlsx.writeBuffer().then((data: ArrayBuffer) => {
+        console.log(data);
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, 'CarData.xlsx');
+        // const blob = new Blob([data], { type: this.blobType });
+        // const url = window.URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.href = url;
+        // a.download = this.excelFileName;
+        // a.click();
+      });
+    } catch (err) {
       console.log('OOOOOOO this is the error: ' + err);
+    }
   }
-}
   generateExcelN() {
 
     // Excel Title, Header, Data
@@ -147,11 +190,23 @@ export class ExcelService {
     // Merge Cells
     worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
-    // Generate Excel File with given name
-    workbook.xlsx.writeBuffer().then((data) => {
-      console.log(data);
-      // const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      // fs.saveAs(blob, 'CarData.xlsx');
+    // // Generate Excel File with given name
+    // workbook.xlsx.writeBuffer().then((data) => {
+    //   console.log(data);
+    //   // const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    //   // fs.saveAs(blob, 'CarData.xlsx');
+    // });
+
+    workbook.xlsx.writeBuffer().then((anyName: ArrayBuffer) => {
+      console.log(anyName);
+      const blob = new Blob([anyName], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, 'CarData.xlsx');
+      // const blob = new Blob([data], { type: this.blobType });
+      // const url = window.URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = this.excelFileName;
+      // a.click();
     });
 
   }
