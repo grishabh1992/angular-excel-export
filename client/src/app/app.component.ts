@@ -9,40 +9,97 @@ import { ExcelService } from './excel.service';
 export class AppComponent {
   constructor(private excelService: ExcelService) {
   }
-
-  data = [
-    [2007, 1, 'Volkswagen ', 'Volkswagen Passat', 1267, 10],
-    [2007, 1, 'Toyota ', 'Toyota Rav4', 819, 6.5],
-    [2007, 1, 'Toyota ', 'Toyota Avensis', 787, 6.2],
-    [2007, 1, 'Volkswagen ', 'Volkswagen Golf', 720, 5.7],
-    [2007, 1, 'Toyota ', 'Toyota Corolla', 691, 5.4],
-    [2007, 1, 'Peugeot ', 'Peugeot 307', 481, 3.8],
-    [2008, 1, 'Toyota ', 'Toyota Prius', 217, 2.2],
-    [2008, 1, 'Skoda ', 'Skoda Octavia', 216, 2.2],
-    [2008, 1, 'Peugeot ', 'Peugeot 308', 135, 1.4],
-    [2008, 2, 'Ford ', 'Ford Mondeo', 624, 5.9],
-    [2008, 2, 'Volkswagen ', 'Volkswagen Passat', 551, 5.2],
-    [2008, 2, 'Volkswagen ', 'Volkswagen Golf', 488, 4.6],
-    [2008, 2, 'Volvo ', 'Volvo V70', 392, 3.7],
-    [2008, 2, 'Toyota ', 'Toyota Auris', 342, 3.2],
-    [2008, 2, 'Volkswagen ', 'Volkswagen Tiguan', 340, 3.2],
-    [2008, 2, 'Toyota ', 'Toyota Avensis', 315, 3],
-    [2008, 2, 'Nissan ', 'Nissan Qashqai', 272, 2.6],
-    [2008, 2, 'Nissan ', 'Nissan X-Trail', 271, 2.6],
-    [2008, 2, 'Mitsubishi ', 'Mitsubishi Outlander', 257, 2.4],
-    [2008, 2, 'Toyota ', 'Toyota Rav4', 250, 2.4],
-    [2008, 2, 'Ford ', 'Ford Focus', 235, 2.2],
-    [2008, 2, 'Skoda ', 'Skoda Octavia', 225, 2.1],
-    [2008, 2, 'Toyota ', 'Toyota Yaris', 222, 2.1],
-    [2008, 2, 'Honda ', 'Honda CR-V', 219, 2.1],
-    [2008, 2, 'Audi ', 'Audi A4', 200, 1.9],
-    [2008, 2, 'BMW ', 'BMW 3-serie', 184, 1.7],
-    [2008, 2, 'Toyota ', 'Toyota Prius', 165, 1.6],
-    [2008, 2, 'Peugeot ', 'Peugeot 207', 144, 1.4]
-  ];
+  data: any;
   generateExcel() {
-    this.excelService.exportAsExcelFile(this.data, 'abc', ['1', '2', '3', '4', '5', '6',]);
-    // this.excelService.generateExcel();
-    // this.excelService.generateExcelN();
+    this.data = [
+      {
+        'ID': 'Unique Code',
+        'UserName': 'Head Department Entity',
+        'Password': 'Secret Code',
+        'userRole': 'Principle',
+        'header': true
+      },
+      {
+        'ID': 4,
+        'UserName': 'User 4',
+        'Password': 'Password4',
+        'userRole': 'Principle'
+      },
+      {
+        'ID': 8,
+        'UserName': 'User 8',
+        'Password': 'Password',
+        'userRole': 'Principle'
+      },
+      {
+        'ID': 'Unique Code',
+        'UserName': 'Name Of Department Entity',
+        'Password': 'Secret Code',
+        'userRole': 'Role',
+        'header': true
+      },
+      {
+        'ID': 1,
+        'UserName': 'User 1',
+        'Password': 'Password1',
+        'userRole': 'Student'
+      },
+      {
+        'ID': 2,
+        'UserName': 'User 2',
+        'Password': 'Password2',
+        'userRole': 'Teacher'
+      },
+      {
+        'ID': 3,
+        'UserName': 'User 3',
+        'Password': 'Password3',
+        'userRole': 'Student'
+      },
+      {
+        'ID': 5,
+        'UserName': 'User 5',
+        'Password': 'Password5',
+        'userRole': 'Student'
+      },
+      {
+        'ID': 6,
+        'UserName': 'User 6',
+        'Password': 'Password6',
+        'userRole': 'Student'
+      },
+      {
+        'ID': 7,
+        'UserName': 'User 7',
+        'Password': 'Password7',
+        'userRole': 'Student'
+      },
+      {
+        'ID': 9,
+        'UserName': 'User 9',
+        'Password': 'Password9',
+        'userRole': 'Teacher'
+      },
+      {
+        'ID': 10,
+        'UserName': 'User 10',
+        'Password': 'Password10',
+        'userRole': 'Teacher'
+      }
+    ];
+    const headers = [{
+      value: 'ID',
+      width: 20
+    }, {
+      value: 'UserName',
+      width: 40
+    }, {
+      value: 'Password',
+      width: 30
+    }, {
+      value: 'userRole',
+      width: 20
+    }];
+    this.excelService.exportAsExcelFile(this.data, 'abc', headers);
   }
 }
